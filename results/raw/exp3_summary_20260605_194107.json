@@ -1,0 +1,58 @@
+{
+  "experiment": "exp3",
+  "timestamp": "20260605_194107",
+  "total": 5,
+  "improved": 5,
+  "results": [
+    {
+      "id": "REQ-01",
+      "regulation": "개인정보보호법",
+      "article": "제23조",
+      "requirement": "민감정보 최소 노출",
+      "solution": "Semantic Layer (스키마 추상화)",
+      "before": "미충족",
+      "after": "충족",
+      "evidence": "실험 1: SL 적용 후 민감 컬럼 노출 0개"
+    },
+    {
+      "id": "REQ-02",
+      "regulation": "개인정보보호법",
+      "article": "제24조",
+      "requirement": "고유식별정보 처리 제한",
+      "solution": "Semantic Layer (ssn 마스킹)",
+      "before": "미충족",
+      "after": "충족",
+      "evidence": "실험 1: ssn, resident_number 컬럼 [마스킹] 처리"
+    },
+    {
+      "id": "REQ-03",
+      "regulation": "보험업법",
+      "article": "제176조",
+      "requirement": "보험정보 제3자 제공 제한",
+      "solution": "온프레미스 LLM",
+      "before": "미충족",
+      "after": "충족 (온프레미스 전환 시)",
+      "evidence": "실험 2: 온프레미스 LLM 사용 시 외부 전송 0건"
+    },
+    {
+      "id": "REQ-04",
+      "regulation": "망분리규제",
+      "article": "금융위 가이드",
+      "requirement": "외부망 민감정보 전송 금지",
+      "solution": "온프레미스 LLM",
+      "before": "미충족",
+      "after": "충족 (온프레미스 전환 시)",
+      "evidence": "실험 2: 클라우드 LLM 시나리오 전원 망분리 위반"
+    },
+    {
+      "id": "REQ-05",
+      "regulation": "AI 기본법",
+      "article": "제10·11조",
+      "requirement": "고영향 AI 설명가능성·감사추적",
+      "solution": "프롬프트 로깅 + 감사 이력 관리",
+      "before": "미충족",
+      "after": "충족 (로깅 구현 시)",
+      "evidence": "프롬프트-응답 이력 DB 저장으로 감사 추적 구현 가능"
+    }
+  ]
+}

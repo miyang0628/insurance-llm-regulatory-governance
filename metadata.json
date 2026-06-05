@@ -1,0 +1,34 @@
+{
+  "title": "생명보험사 LLM 기반 언더라이팅 AI 도입의 규제 리스크와 거버넌스 프레임워크",
+  "version": "1.0",
+  "target_journal": "경영정보학연구",
+  "method": [
+    "법령 분석",
+    "규제 위반 시뮬레이션 실험"
+  ],
+  "regulations": [
+    "AI 기본법",
+    "개인정보보호법",
+    "보험업법",
+    "망분리 규제"
+  ],
+  "experiments": [
+    {
+      "id": "exp1",
+      "name": "민감정보 노출 측정",
+      "validates": "개인정보보호법 제23조"
+    },
+    {
+      "id": "exp2",
+      "name": "망분리 시나리오",
+      "validates": "금융위 망분리 가이드라인"
+    },
+    {
+      "id": "exp3",
+      "name": "Semantic Layer 효과",
+      "validates": "규제 요건-기술 솔루션 매핑"
+    }
+  ],
+  "db": "data/insurance_uw.db",
+  "language": "ko"
+}

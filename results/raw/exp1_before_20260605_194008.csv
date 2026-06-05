@@ -1,0 +1,4 @@
+﻿table,column,law,article,severity,category,scenario
+insured,insured_name,개인정보보호법,제15조,중,개인정보,without_semantic_layer
+insured,birth_date,개인정보보호법,제15조,중,개인정보,without_semantic_layer
+medical_history,diagnosis_code,개인정보보호법,제23조,상,민감정보,without_semantic_layer

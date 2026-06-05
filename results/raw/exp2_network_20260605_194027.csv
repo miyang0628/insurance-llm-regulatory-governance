@@ -1,0 +1,4 @@
+﻿시나리오,네트워크,민감 컬럼 노출,외부망 전송 컬럼,망분리 판정
+클라우드 LLM + Semantic Layer 미적용,외부망,8,8,위반
+클라우드 LLM + Semantic Layer 적용,외부망,0,5,준수
+온프레미스 LLM + Semantic Layer 미적용,내부망,8,0,준수

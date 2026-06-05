@@ -1,0 +1,62 @@
+{
+  "experiment": "exp2",
+  "timestamp": "20260605_194027",
+  "results": [
+    {
+      "scenario_id": "A_cloud_without_sl",
+      "label": "클라우드 LLM + Semantic Layer 미적용",
+      "network": "외부망",
+      "total_context_cols": 8,
+      "sensitive_exposed": [
+        "insured_name",
+        "ssn",
+        "birth_date",
+        "diagnosis_code",
+        "disease_history",
+        "bmi",
+        "underwriting_result",
+        "premium_amount"
+      ],
+      "sensitive_count": 8,
+      "ext_transfer_count": 8,
+      "violation": true,
+      "verdict": "위반",
+      "violated_articles": [
+        "금융위원회 망분리 가이드라인"
+      ]
+    },
+    {
+      "scenario_id": "B_cloud_with_sl",
+      "label": "클라우드 LLM + Semantic Layer 적용",
+      "network": "외부망",
+      "total_context_cols": 5,
+      "sensitive_exposed": [],
+      "sensitive_count": 0,
+      "ext_transfer_count": 5,
+      "violation": false,
+      "verdict": "준수",
+      "violated_articles": []
+    },
+    {
+      "scenario_id": "C_onprem_without_sl",
+      "label": "온프레미스 LLM + Semantic Layer 미적용",
+      "network": "내부망",
+      "total_context_cols": 8,
+      "sensitive_exposed": [
+        "insured_name",
+        "ssn",
+        "birth_date",
+        "diagnosis_code",
+        "disease_history",
+        "bmi",
+        "underwriting_result",
+        "premium_amount"
+      ],
+      "sensitive_count": 8,
+      "ext_transfer_count": 0,
+      "violation": false,
+      "verdict": "준수",
+      "violated_articles": []
+    }
+  ]
+}

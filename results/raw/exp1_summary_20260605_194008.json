@@ -1,0 +1,16 @@
+{
+  "experiment": "exp1",
+  "timestamp": "20260605_194008",
+  "before": {
+    "exposed_columns": 3,
+    "by_law": {
+      "개인정보보호법": 3
+    }
+  },
+  "after": {
+    "exposed_columns": 0
+  },
+  "reduction": 3,
+  "pipa_article23_compliance": "미충족 → 충족",
+  "pipa_article24_compliance": "미충족 → 충족"
+}
