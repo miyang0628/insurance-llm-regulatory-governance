@@ -1,51 +1,114 @@
-# Insurance LLM Regulatory Governance
+# 생명보험사 LLM 기반 언더라이팅 AI 도입의 규제 위반 시뮬레이션 코드
 
-생명보험사 LLM 기반 언더라이팅 AI 도입의 규제 리스크와 거버넌스 프레임워크
+본 저장소는 생명보험사 LLM 기반 언더라이팅 AI 도입의 규제 리스크와 거버넌스 프레임워크를 다룬 연구의 시뮬레이션 코드 및 실험 결과를 포함합니다. AI 기본법·개인정보보호법·보험업법·망분리 규제 4개 법령을 통합 분석하고, 시뮬레이션 결과를 토대로 3단계 거버넌스 프레임워크를 제안합니다.
 
-## 논문 정보
-- **제목**: 생명보험사 LLM 기반 언더라이팅 AI 도입의 규제 리스크와 거버넌스 프레임워크
-- **목표 저널**: 경영정보학연구 (KCI우수등재)
-- **방법론**: 법령 분석 + 규제 위반 시뮬레이션 실험 (3종)
+> 본 저장소는 익명 심사를 위한 보조 자료로 제출되었습니다. 저자 정보는 게재 확정 후 공개됩니다.
+
+---
 
 ## 폴더 구조
+
 ```
-├── data/                          # 실험용 DB (자체 보관, 외부 경로 참조 없음)
-│   └── insurance_uw.db
-├── db_config.py                   # DB 연결 유틸 (data/ 내부 경로 고정)
-├── regulatory_tags.py             # 컬럼 → 규제 조항 매핑 딕셔너리
-├── regulation_analysis/           # 4개 규제 분석 문서
-├── experiments/                   # 규제 위반 시뮬레이션 실험 3종
-│   ├── exp1_sensitive_exposure/   # 민감정보 노출 측정
-│   ├── exp2_network_separation/   # 망분리 시나리오
-│   └── exp3_semantic_layer_effect/# Semantic Layer 규제 충족 효과
-├── notebooks/                     # 주피터노트북 (00~06)
-├── results/                       # 실험 결과 (raw/figures/tables)
-├── framework/                     # 거버넌스 프레임워크 산출물
-└── paper_assets/                  # 논문 그림·표 목록
+├── db_config.py                  # DB 연결 유틸리티
+├── regulatory_tags.py            # 컬럼-규제 조항 매핑 딕셔너리
+├── notebook_experiments.ipynb    # 전체 시뮬레이션 실험 (실험 1–3)
+├── data/
+│   └── insurance_uw.db           # 생명보험 언더라이팅 SQLite DB
+└── results/
+    └── figures/
+        ├── exp1_exposure_comparison.png
+        ├── exp2_network_comparison.png
+        └── exp3_compliance_comparison.png
 ```
 
+---
+
+## 실험 구성
+
+### 실험 1: 의미 계층 유무에 따른 민감정보 노출 측정
+
+의미 계층(Semantic Layer) 적용 여부에 따라 규제 대상 민감 컬럼이 LLM 프롬프트에 얼마나 노출되는지를 측정합니다.
+
+- 의미 계층 미적용: 30개 컬럼 노출 (전체 253개 중 11.9%)
+- 의미 계층 적용: 0개 노출 (노출 감소율 100%)
+
+| 규제 | 조항 | 심각도 | 노출 컬럼 수 |
+|---|---|---|---|
+| 개인정보보호법 | 제23조 (민감정보) | 상 | 11 |
+| 보험업법 | 제176조 (보험정보) | 중 | 11 |
+| 망분리규제 | 금융위 가이드라인 | 중 | 5 |
+| 개인정보보호법 | 제15조 (일반 개인정보) | 중 | 3 |
+| **합계** | | | **30** |
+
+---
+
+### 실험 2: 운영 방식별 외부망 전송 데이터 위험도 비교
+
+LLM 운영 방식과 의미 계층 적용 여부 조합에 따른 외부망 전송 위험도를 비교합니다.
+
+| 시나리오 | 네트워크 | 민감 컬럼 노출 | 외부망 전송 | 위험 수준 |
+|---|---|---|---|---|
+| A: 클라우드 LLM + 의미 계층 미적용 | 외부망 | 13개 | 13개 | 매우 높음 |
+| B: 클라우드 LLM + 의미 계층 적용 | 외부망 | 0개 | 4개 (추상화) | 낮음 |
+| C: 온프레미스 LLM | 내부망 | 해당 없음 | 0개 | 없음 |
+
+---
+
+### 실험 3: 규제 요건-기술 솔루션 매핑
+
+각 규제 요건에 대한 기술 솔루션 적용 전후 충족 여부를 비교합니다.
+
+| ID | 규제·조항 | 요건 | 기술 솔루션 | 적용 전 | 적용 후 |
+|---|---|---|---|---|---|
+| REQ-01 | 개인정보보호법 제23조 | 민감정보 최소 노출 | 의미 계층 | 미충족 | 충족 |
+| REQ-02 | 개인정보보호법 제15조 | 개인정보 최소수집 | 의미 계층 | 미충족 | 충족 |
+| REQ-03 | 보험업법 제176조 | 제3자 제공 제한 | 온프레미스 LLM | 미충족 | 충족 |
+| REQ-04 | 망분리규제 | 외부망 전송 금지 | 온프레미스 LLM | 미충족 | 충족 |
+| REQ-05 | AI 기본법 제10·11조 | 설명가능성·감사추적 | 프롬프트 로깅 | 미충족 | 충족 |
+
+---
+
 ## 환경 설정
+
 ```bash
 conda activate uw-benchmark
 pip install -r requirements.txt
 ```
 
-## DB 준비
-논문 A(`insurance-underwriting-nl2sql-benchmark`)의 DB를 복사합니다.
-```bash
-cp ../insurance-underwriting-nl2sql-benchmark/data/insurance_uw.db data/
-```
-또는 `setup_project_paper_b.py` 실행 전 같은 위치에 `insurance_uw.db` 를 두면 자동 복사됩니다.
+### 필요 패키지
 
-## 실험 실행
-```bash
-python experiments/exp1_sensitive_exposure/exp1_run.py
-python experiments/exp2_network_separation/exp2_run.py
-python experiments/exp3_semantic_layer_effect/exp3_run.py
+```
+pandas>=2.0.0
+matplotlib>=3.7.0
+pyyaml>=6.0
 ```
 
-## 분석 대상 법령
-- AI 기본법 (법률 제20676호, 2026.1.22 시행)
-- 개인정보보호법 제23조 (민감정보 처리 제한)
-- 보험업법 제176조 (정보보호 의무)
-- 금융위원회 망분리 규제 가이드라인
+---
+
+## 데이터베이스
+
+시뮬레이션은 생명보험 언더라이팅 SQLite 데이터베이스(26개 테이블, 253개 컬럼)를 사용합니다. 데이터베이스 파일은 `data/insurance_uw.db` 경로에 위치합니다.
+
+---
+
+## 재현 가능성
+
+모든 실험은 단일 노트북에 포함되어 있습니다.
+
+```
+notebook_experiments.ipynb
+```
+
+노트북은 실행 없이 GitHub에서 직접 결과를 확인할 수 있습니다. 실험 결과 그림은 `results/figures/`에 저장되어 있습니다.
+
+---
+
+## 규제 태그 딕셔너리
+
+`regulatory_tags.py`는 데이터베이스 컬럼과 규제 조항 간의 매핑을 정의합니다. 개인정보보호법·보험업법·망분리 규제 가이드라인을 근거로 구성되었으며, 실험 1·2·3에서 공통으로 사용됩니다.
+
+---
+
+## 라이선스
+
+MIT License
